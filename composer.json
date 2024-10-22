@@ -37,7 +37,8 @@
         "jenssegers/agent": "^2.6",
         "curl/curl": "^2.5",
         "hyperf/pimple": "~2.2.0",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",

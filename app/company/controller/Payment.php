@@ -25,7 +25,7 @@ class Payment extends \app\common\controller\CompanyController
             $payno = $this->request->param('payno');
             $this->returnData['code'] = 1;
             $this->returnData['msg'] = 'success';
-            $this->returnData['data'] = Pay::wechat(Config::get('payment.wxpay'))
+            $this->returnData['data'] = Pay::wechat(Config::get('payment.wechat.default'))
                 ->find(['out_trade_no' => $payno]);
         }
 
@@ -49,7 +49,7 @@ class Payment extends \app\common\controller\CompanyController
 
         $data = $this->createOrder($this->userInfo, $amount, $payType, $orderNo);
         if ($payType === 1) {
-            $pay = Pay::wechat(Config::get('payment.wxpay'))->scan($data);
+            $pay = Pay::wechat(Config::get('payment'))->scan($data);
             $this->returnData['code'] = 1;
             $this->returnData['msg'] = '订单创建成功';
             $this->returnData['data'] = [
@@ -61,7 +61,7 @@ class Payment extends \app\common\controller\CompanyController
         }
 
         if ($payType === 2) {
-            return Pay::alipay(Config::get('payment.alipay.web'))->web($data)->send();
+            return Pay::alipay(Config::get('payment'))->web($data)->send();
         }
     }
 

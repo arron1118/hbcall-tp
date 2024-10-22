@@ -22,7 +22,7 @@ class Payment
         foreach ($notpay as $key => $value) {
             if ($value->pay_type === 1) {
                 // 检查微信订单是否已支付
-                $data = Pay::wechat(Config::get('payment.wechat.default'))
+                $data = Pay::wechat(Config::get('payment'))
                     ->query(['out_trade_no' => $value->payno]);
                 Log::info('微信订单：' . json_encode($data));
                 if ($data->trade_state === 'SUCCESS') {
@@ -45,7 +45,7 @@ class Payment
             } elseif ($value->pay_type === 2) {
                 // 检查支付宝订单是否已支付
                 try {
-                    $data = Pay::alipay(Config::get('payment.alipay.web'))
+                    $data = Pay::alipay(Config::get('payment'))
                         ->query(['out_trade_no' => $value->payno]);
                     Log::info('支付宝订单：' . json_encode($data));
                     if ($data->trade_status === 'TRADE_SUCCESS') {

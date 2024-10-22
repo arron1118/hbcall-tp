@@ -22,19 +22,6 @@ trait PaymentTrait
     {
         parent::initialize();
 
-        dump(Config::get('payment.wechat.default'));
-        \Yansongda\Pay\Pay::config(Config::get('payment.wechat.default'));
-        try {
-            \Yansongda\Pay\get_wechat_public_certs([]);
-        } catch (ContainerException $e) {
-            dump($e);
-        } catch (InvalidConfigException $e) {
-            dump($e);
-        } catch (InvalidParamsException $e) {
-        } catch (ServiceNotFoundException $e) {
-        } catch (DecryptException $e) {
-        }
-
         $this->model = new \app\common\model\Payment();
         $this->view->assign([
             'statusList' => $this->model->getStatusList(),
@@ -44,7 +31,7 @@ trait PaymentTrait
 
     public function index()
     {
-//        Event::trigger('Payment');
+        Event::trigger('Payment');
         if ($this->module === 'admin') {
             $company = (new Company())->getCompanyList();
             $this->view->assign('company', $company->hidden(['user'])->toArray());
@@ -117,8 +104,10 @@ trait PaymentTrait
         if ($payType === 1) {
             $return = [
                 'out_trade_no' => $orderNo,
-                'total_fee' => $amount * 100, // **单位：分**
-                'body' => $title,
+                'description' => $title,
+                'amount' => [
+                    'total_fee' => $amount * 100, // **单位：分**
+                ]
             ];
         } elseif ($payType === 2) {
             $return = [
