@@ -1,0 +1,136 @@
+{extend name="../common/public/base" /}
+{block name="css"}
+{include file="../common/public/bootstrap" /}
+<style>
+    canvas {
+        border: 1px solid #cccccc;
+    }
+    button {
+        margin: 10px;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <canvas id="signatureCanvas"></canvas>
+        <br>
+        <button id="clearButton" class="btn btn-light">清除签名</button>
+        <button id="saveButton" class="btn btn-primary">保存签名</button>
+        <img src="{$image}" />
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    // 配置
+    const config = {
+        width: 400,
+        height: 200,
+        lineWidth: 5,
+        strokeStyle: 'red',
+        lineCap: 'round',
+        lineJoin: 'round'
+    }
+    const canvas = document.getElementById("signatureCanvas");
+    canvas.width = config.width
+    canvas.height = config.height
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = 'transparent'
+    // 制作填充背景色
+    ctx.fillRect(
+        0,
+        0,
+        config.width,
+        config.height
+    )
+    console.log('ctx', ctx)
+
+    // 保存前次制作的坐标及偏移量
+    const client = {
+        offsetX: 0,
+        offsetY: 0,
+        endX: 0,
+        endY: 0
+    }
+
+    // 判断是否为移动端
+    const mobileStatus = (/Mobile|Android|iPhone/i.test(navigator.userAgent))
+    console.log(mobileStatus)
+
+    // 制作
+    const draw = event => {
+        // 获取当前坐标点位
+        const { pageX, pageY } = mobileStatus ? event.changedTouches[0] : event
+        // 修正最后一次制作的坐标点
+        client.endX = pageX
+        client.endY = pageY
+        // 依据坐标点位移动增加线条
+        ctx.lineTo(pageX, pageY)
+        // 制作
+        ctx.stroke()
+    }
+
+    // 初始化
+    const init = event => {
+        // 获取偏移量及坐标
+        const { offsetX, offsetY, pageX, pageY } = mobileStatus ? event.changedTouches[0] : event
+        // 修正前次的偏移量及坐标
+        client.offsetX = offsetX
+        client.offsetY = offsetY
+        client.endX = pageX
+        client.endY = pageY
+        // 移除上一次 beginPath 之后的一切途径，进行制作
+        ctx.beginPath()
+        // 依据装备文件设置进行相应装备
+        ctx.lineWidth = config.lineWidth
+        ctx.strokeStyle = config.strokeStyle
+        ctx.lineCap = config.lineCap
+        ctx.lineJoin = config.lineJoin
+        // 设置画线开端点位
+        ctx.moveTo(client.endX, client.endY)
+        // 监听鼠标移动或手势移动
+        window.addEventListener(mobileStatus ? 'touchmove' : 'mousemove', draw)
+    }
+
+    canvas.addEventListener(mobileStatus ? 'touchstart' : 'mousedown', init);
+
+    const closeDraw = () => {
+        // 完毕制作
+        ctx.closePath()
+        // 移除鼠标移动或手势移动监听器
+        canvas.removeEventListener('mousemove', draw)
+    }
+
+    // 添加鼠标/手势离开监听器
+    canvas.addEventListener(mobileStatus ? 'touchend' : 'mouseup', closeDraw)
+
+    // 撤销/清空画布
+    const cancel = () => {
+        // 清空当时画布上的一切制作内容
+        ctx.clearRect(0, 0, config.width, config.height);
+    }
+
+    const clearButton = document.getElementById("clearButton");
+    clearButton.addEventListener("click", cancel);
+
+    // 将画布内容保存为图片
+    const save = () => {
+        canvas.toBlob(blob => {
+            // 获取当前时间并转成字符串，用来作为文件名
+            const date = Date.now().toString()
+            // 创建一个 a 标签
+            const a = document.createElement('a')
+            a.download = `${date}.png`
+            // 设置 a 标签的跳转途径为文件流地址
+            a.href = URL.createObjectURL(blob)
+            a.click()
+            a.remove()
+        })
+    }
+
+    const saveButton = document.getElementById("saveButton");
+    saveButton.addEventListener("click", save);
+</script>
+{/block}

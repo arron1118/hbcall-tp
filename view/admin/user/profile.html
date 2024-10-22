@@ -1,0 +1,65 @@
+{extend name="../common/public/base" /}
+{block name="css"}
+{include file="../common/public/bootstrap" /}
+{/block}
+{block name="body"}
+<div class="container-fluid bg-white min-vh-100 rounded-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-sm-12">
+            <form class="layui-form layuimini-form mt-5">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" lay-verify="required" placeholder="请输入昵称"  value="{$user.username}" class="layui-input text-muted border-0" disabled>
+                        <tip>登录账号，暂不支持更改！</tip>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickname" placeholder="请输入昵称"  value="{$user.nickname}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="realname" placeholder="请输入真实姓名"  value="{$user.realname}" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['form', 'miniTab', 'jquery', 'arronUtil'], function () {
+        let form = layui.form,
+            $ = layui.jquery,
+            arronUtil = layui.arronUtil,
+            miniTab = layui.miniTab;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            $.post(arronUtil.url("/user/profile"), data.field, function (res) {
+                let option = { title: res.msg, position: 'top' }
+                if (res.code) {
+                    option.icon = 'success'
+                }
+
+                arronUtil.Toast.fire(option)
+            })
+
+            return false;
+        });
+
+    });
+</script>
+
+{/block}
