@@ -34,5 +34,5 @@ return [
     'show_error_msg'   => false,
 
     // app name
-    'app_name' => env('app.name', '外呼系统'),
+    'app_name' => env('APP_NAME', '外呼系统'),
 ];

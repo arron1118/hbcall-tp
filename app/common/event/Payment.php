@@ -5,7 +5,8 @@ namespace app\common\event;
 use think\facade\Config;
 use think\facade\Log;
 use think\facade\Session;
-use Yansongda\Pay\Exception\Exception;
+use Yansongda\Artful\Exception\InvalidConfigException;
+use \Yansongda\Artful\Exception\Exception;
 use Yansongda\Pay\Pay;
 
 class Payment
@@ -46,8 +47,10 @@ class Payment
                         $value->status = 2;
                         $value->save();
                     }
+                } catch (InvalidConfigException $e){
+                    Log::error('微信支付配置异常：[' . $e->getCode() . '] ' . $e->getMessage());
                 } catch (Exception $e) {
-                    Log::error('微信订单异常：' . json_encode($e));
+                    Log::error('微信订单异常：[' . $e->getCode() . '] ' . $e->getMessage());
                 }
             } elseif ($value->pay_type === 2) {
                 // 检查支付宝订单是否已支付
@@ -65,8 +68,10 @@ class Payment
                         $value->status = 2;
                         $value->save();
                     }
+                } catch (InvalidConfigException $e){
+                    Log::error('支付宝配置异常：[' . $e->getCode() . '] ' . $e->getMessage());
                 } catch (Exception $e) {
-                    Log::error('支付宝订单异常：' . json_encode($e));
+                    Log::error('支付宝订单异常：[' . $e->getCode() . '] ' . $e->getMessage());
                     $response = $e->raw['alipay_trade_query_response'];
                     if ($response['code'] === '40004' && $response['sub_code'] === 'ACQ.TRADE_NOT_EXIST') {
                         $value->status = 2;
