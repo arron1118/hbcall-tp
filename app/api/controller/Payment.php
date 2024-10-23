@@ -7,6 +7,7 @@ use app\common\traits\PaymentTrait;
 use app\common\model\Company;
 use think\facade\Config;
 use think\facade\Db;
+use think\facade\Log;
 use Yansongda\Pay\Exceptions\GatewayException;
 use Yansongda\Pay\Pay;
 use app\common\model\Payment as PaymentModel;
@@ -37,8 +38,10 @@ class Payment extends \app\common\controller\ApiController
         // 微信支付
         $order = [
             'out_trade_no' => getOrderNo(),
-            'total_fee' => 0.01 * 100, // **单位：分**
-            'body' => $title,
+            'description' => $title,
+            'amount' => [
+                'total' => 0.01 * 100, // **单位：分**
+            ]
         ];
 
         /*$wxpay = Config::get('payment.wxpay');
@@ -61,24 +64,24 @@ class Payment extends \app\common\controller\ApiController
 
     /**
      * 微信支付回调
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function notify()
     {
-        $pay = Pay::wechat(Config::get('payment.wxpay'));
+        $pay = Pay::wechat(Config::get('payment'));
 
         try {
-            $data = $pay->verify(); // 是的，验签就这么简单！
+            $data = $pay->callback(); // 是的，验签就这么简单！
+            Log::info('微信支付回调：' . json_encode($data));
 
             if ($data->result_code === 'SUCCESS') {
                 $mt = mktime(
-                    substr($data->time_end, 8, 2),
-                    substr($data->time_end, 10, 2),
-                    substr($data->time_end, 12, 2),
-                    substr($data->time_end, 4, 2),
-                    substr($data->time_end, 6, 2),
-                    substr($data->time_end, 0, 4)
+                    substr($data->success_time, 8, 2),
+                    substr($data->success_time, 10, 2),
+                    substr($data->success_time, 12, 2),
+                    substr($data->success_time, 4, 2),
+                    substr($data->success_time, 6, 2),
+                    substr($data->success_time, 0, 4)
                 );
                 $paymentModel = PaymentModel::where(['payno' => $data->out_trade_no, 'status' => 0])->findOrEmpty();
 //            $paymentModel->startTrans();
@@ -91,19 +94,20 @@ class Payment extends \app\common\controller\ApiController
                     $this->updateUserAmount($paymentModel);
                 }
             }
+            return $pay->success(); // laravel 框架中请直接 `return $pay->success()`
         } catch (\Exception $e) {
             // $e->getMessage();
+            Log::error('微信支付回调异常：' . json_encode($e));
         }
-
-        return $pay->success()->send(); // laravel 框架中请直接 `return $pay->success()`
     }
 
     public function alipayNotify()
     {
-        $alipay = Pay::alipay(Config::get('payment.alipay.web'));
+        $alipay = Pay::alipay(Config::get('payment'));
 
         try {
-            $data = $alipay->verify();
+            $data = $alipay->callback();
+            Log::info('支付宝回调：' . json_encode($data));
 
             if ($data->trade_status === 'TRADE_SUCCESS') {
                 $paymentModel = PaymentModel::where(['payno' => $data->out_trade_no, 'status' => 0])->findOrEmpty();
@@ -116,10 +120,11 @@ class Payment extends \app\common\controller\ApiController
                     $this->updateUserAmount($paymentModel);
                 }
             }
-        } catch (\Exception $e) {
-        }
 
-        return $alipay->success()->send();
+            return $alipay->success();
+        } catch (\Exception $e) {
+            Log::error('支付宝回调异常：' . json_encode($e));
+        }
     }
 
     /**
@@ -170,10 +175,10 @@ class Payment extends \app\common\controller\ApiController
         $this->returnData['code'] = 1;
         $this->returnData['msg'] = 'success';
         if ($payType === 1) {
-            $res = Pay::wechat(Config::get('payment.wxpay'))->app($data);
+            $res = Pay::wechat(Config::get('payment'))->app($data);
             $this->returnData['data'] = json_decode($res->getContent());
         } elseif ($payType === 2) {
-            $res = Pay::alipay(Config::get('payment.alipay.app'))->app($data);
+            $res = Pay::alipay(Config::get('payment'))->app($data);
             $this->returnData['data']['alipay'] = $res->getContent();
         }
 
