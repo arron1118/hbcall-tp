@@ -13,7 +13,7 @@ class Payment extends \app\common\controller\CompanyController
     use PaymentTrait;
 
     /**
-     * 检测订单
+     * 检测微信扫码支付订单
      * @return \think\response\Json
      * @throws \Yansongda\Pay\Exceptions\GatewayException
      * @throws \Yansongda\Pay\Exceptions\InvalidArgumentException
@@ -25,8 +25,11 @@ class Payment extends \app\common\controller\CompanyController
             $payno = $this->request->param('payno');
             $this->returnData['code'] = 1;
             $this->returnData['msg'] = 'success';
-            $this->returnData['data'] = Pay::wechat(Config::get('payment.wechat.default'))
-                ->find(['out_trade_no' => $payno]);
+            $this->returnData['data'] = Pay::wechat(Config::get('payment'))
+                ->find([
+                    'out_trade_no' => $payno,
+                    '_action' => 'native',  // 查询扫码支付订单
+                ]);
         }
 
         return json($this->returnData);

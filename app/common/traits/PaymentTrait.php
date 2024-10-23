@@ -106,7 +106,7 @@ trait PaymentTrait
                 'out_trade_no' => $orderNo,
                 'description' => $title,
                 'amount' => [
-                    'total_fee' => $amount * 100, // **单位：分**
+                    'total' => $amount * 100, // **单位：分**
                 ]
             ];
         } elseif ($payType === 2) {
