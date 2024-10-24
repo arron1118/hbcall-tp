@@ -155,7 +155,7 @@ class HbCall extends \app\common\controller\HomeController
 
         $curl->post(Config::get('hbcall.axb_call_api'), $params);
         Log::info(json_encode($params));
-        Log::info($curl->response);
+        Log::info(json_encode($curl->response));
         $response = json_decode($curl->response, true);
 
         if ($response) {
