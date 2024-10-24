@@ -6,6 +6,11 @@ namespace app\company\controller;
 use app\common\traits\PaymentTrait;
 use chillerlan\QRCode\QRCode;
 use think\facade\Config;
+use think\facade\Log;
+use Yansongda\Artful\Contract\ConfigInterface;
+use Yansongda\Artful\Exception\InvalidConfigException;
+use Yansongda\Artful\Logger;
+use Yansongda\Pay\Exception\Exception;
 use Yansongda\Pay\Pay;
 
 class Payment extends \app\common\controller\CompanyController
@@ -37,7 +42,6 @@ class Payment extends \app\common\controller\CompanyController
 
     /**
      * 二维码支付
-     * @return \think\response\Json|void
      */
     public function pay()
     {
@@ -51,20 +55,33 @@ class Payment extends \app\common\controller\CompanyController
         }
 
         $data = $this->createOrder($this->userInfo, $amount, $payType, $orderNo);
-        if ($payType === 1) {
-            $pay = Pay::wechat(Config::get('payment'))->scan($data);
-            $this->returnData['code'] = 1;
-            $this->returnData['msg'] = '订单创建成功';
-            $this->returnData['data'] = [
-                'qr' => (new QRCode())->render($pay->code_url),
-                'payno' => $data['out_trade_no'],
-                'amount' => $amount,
-            ];
-            return json($this->returnData);
-        }
+        try {
+            pay::config(Config::get('payment'));
+            if ($payType === 1) {
+                $pay = Pay::wechat()->scan($data);
+                $this->returnData['code'] = 1;
+                $this->returnData['msg'] = '订单创建成功';
+                $this->returnData['data'] = [
+                    'qr' => (new QRCode())->render($pay->code_url),
+                    'payno' => $data['out_trade_no'],
+                    'amount' => $amount,
+                ];
+                return json($this->returnData);
+            }
 
-        if ($payType === 2) {
-            return Pay::alipay(Config::get('payment'))->web($data)->send();
+            if ($payType === 2) {
+                $data['_config'] = 'web';
+                $ssl = openssl_x509_parse('');
+                $this->returnData['data'] = $ssl;
+//                return json($this->returnData);
+                return Pay::alipay()->web($data);
+            }
+        } catch (InvalidConfigException $e) {
+            Log::debug('[' . $e->getCode() . '] ' . $e->getMessage());
+            return '配置出现异常，请联系管理员处理';
+        } catch (Exception $e) {
+            Log::debug('[' . $e->getCode() . '] ' . $e->getMessage());
+            return '数据返回异常';
         }
     }
 

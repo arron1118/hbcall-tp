@@ -9,14 +9,14 @@ return [
             'app_id' => '2021004189691334',
             // 必填-应用私钥 字符串或路径
             // 在 https://open.alipay.com/develop/manage 《应用详情->开发设置->接口加签方式》中设置
-            'app_secret_cert' => 'MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCnhopkIeaMFdT4ZKyje4C0FiaVK4HwAUZaYGVgICWFuv0q9HVXogtcoJt0uaBB46cjB9j0AgzRU676eGiRITpdTsHblHQd+6K0SZ+evAcE4zKYVBI5U6dHMeczu8DUPJsMqQ0jrMVCsrmRf4S6TZne98B59iH03s2GbGM/zTx+Fr1MBp/XU1v2iERHC2BIN6CgZRFVwv95t+Q9ZsVvm1/8yqGuVCvjG0eSOmWjk3QUR/zoa0hs6/VyBWPiybFqVEpmhtT5QH8ZkJlx0VLSyl3RZyQf17UPLGh8ExByXQewTdISvYgIdUyxsD0foSrn7+4TSvu5Xc/4cw+2l7X6hio/AgMBAAECggEAGQkQMXqne5PfqedRrXTNfRw6U9yWpIlsPCFfxQfI071oDD1QM/JxhDw0PzNmcbJVzfRkRcLwq2+4HJJV/ipbEIquieQbnkd2vz6pbg1ndyGE9CLMPmjz/L3GcYLDhHQyL6gr4IL3T8pp1QabjUP/lMStrQxNcszBJi+YfXZsbeM2LRFB5It3Hkv6nJuw6t0zPyp5WZNAeH6kQ5ojOSe4HFyDirDopIeGKKhr1rYFxC/K4IHuysqrpBxBbYDQ2PWnw6YHC85q7wt7t/hAPjl8KLR7ivHEoZZAa0slmI3Ofw5bV1SoHfAcBCH7mDPsJaArnNCsam43ahMeEkVbZrBAYQKBgQDP9PoiHG+F9z0jvUdg95oAlejO73sxBtMAnH0tMfJxuXY+w/FD2E7PaAPMPyUEol6XmF9DePFmID56+UYGcVK35Fw+ruvpMIi26ftmA5iG0XjCJFY5OvpadR+WCxpOdlxamgq+oUhZtvD02Dj33TBpXFaoF2HTQ6/ymryhKBpFBwKBgQDOOl0Tt7fGeirz+53mXUN/M5UT0cxhJPjxlIMppDPZgcjB3wfOIKVmivZxRC4fTIuVS4esKvz0CWBNZQnNHYjYk+THfL1G4bN9cP3Oh1IwcMe+Xub22nIYBiBBlhBn3GXFvPjaKxp/IKXiBTyyI5JEO0KAMjMksLkSnfzpvp4bCQKBgAMrgdCZTF3naegsj3T78T4HCvh0kBUsPHUq7YGN3Fs9b37/b6MQHgttU3l+kOrkKrr22KTnqA5deXZYbGfWvGMPORS/h9sTIVJgeLOSZHXRpZyX/zR6IKzWUjfwTWNazIeZB4bmYHr1nfCthxjIJ1/Dx5JiYNxekMUK9MskGFprAoGAL9ynwW2//xZXZayd5tr6UUk9bg4g6uLTy+11y3JKfk56s1P50cMN4BCcRYlXUvhG5O1UnYaUkmairROoBKy4F9urGwk+PHchWxmgLhCF6KwkD3CjFeN4206AqfgT8qbaD9xdvPSH/70qApzIi2dqCN/f/TSpXfiN215DVlRhCVECgYBChpvmJIojLpt0Ce34pRaOUiAb8ulPzn6iA2OdZt/K9JiKjVASb1NEe6kngxFpIDEXol8m0mPL3LQnlk9OMIMtgq+ysQH/cfB6H1eEtJjmiCm5ap13U3bKJBFG9jRKfaE/pu8owc9QAtmrvZRNPHfwBzHzJVp+4oxV+Om/3r6SIA==',
+            'app_secret_cert' => 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCznwrHfphj6pdC0ux00qXH2gyHAqKZ7W7HzUQdNb+Glz4pwzedm+Rq3vqh3Fyz7AAHXfpx+dA9pfpuHuGEZM4iSoCHb+kVlQ5FPwT6gw/aNBZAcgnxafK3NF344OvbXOnWAcodM46jwFyWT/wQF8DjbJ0f2cghFBBmhrnXRQ0XGiLwdxwS6d8KMq4O3AImBSyCZrTJMmKTnD0p7fEe+elQ3UyN33jFZDhEp2CPgnew/w2PKxWxyhfLBZv9DIMNw07BzxnwHMQehkzeT3oj9U+LjYKsZgjlzeWPoj/7LaWp9IyY2WtWkb5fvpKjSuFDNm2y6rwPtcAMT7fd59EM+sZZAgMBAAECggEAahKr3O+nsqmgtfe1Z6/V8tWTvE8UEu6iEx/m75EED8lVDniYaVzcYThYriliHWZrBe67rX8nOKDB6TIXX4XgLWPtzw2JihNCICZ9HCs1u1gzI8+0i3pTuVkVfZnl7t9Jv/XCk8gUniNFCgcmBaLhZ+yGRX7orpAYt1MsgDHo7xCkE0aiOckGzG/yqN+WWRo9R3XdSslN53QEbaO6EozCpa80jU/1iPsmeQel6PRVFMSFkC1cN1gYzsYh6CN6vtH5YAXNGxDJnK/57DUs2IZH+3H8h/xnhGIhI8RQFFzyMIFINlun02mYLtBIkvbgw9lq9p6TqB2V9y+UsGVyIyVY4QKBgQDpPrpKQEsyxNTMfVh+UWfgLCXHMtaMgN/jEj1zyHYQvl58ShV1G1dBsRbI26SeRV4z6FoZvnsRON53m15dlvq4DX2Cs38XbrJMLqDvOy6rda8djah20SAJKwi7RkUyVZcoO/ZISCT1pBkrXxx3zquVGKwjhVlVW+RAogePcSdvRQKBgQDFJRDa+YFyEM1DtgnFXSZq0bcMJIesbCBn5JjMP7PEjarrHekICXSr1Gn7uawzFM6fEVUdoKZndNtmYXWcmuGrjcLCh8/ZSUcDm9Si0Qxh5q4YUwDU5Y8KMYZnMAoaJ4+KHyJArtIYwRfu827u12PyVU9KFhE78ehkCdDC4aPSBQKBgQDZR4kNAGXM7pV5xU65paYJq7apoU9CZg+qnWRHxrdNk7m7ONxSUlzvokOiaxIoKmC+JDZDAzHr8jkz3LWEo8/9wvtn1USQlJtd4pYjJdOtAB1Yf40u2lNolwE0TBrL7/W3Ely0KxjbB7o2sAx6AznN08UP9fopTUgNeaNnWbatrQKBgQC8eCP2A4ORxahGbDhJGzVH93dUP3QJDVGpoOvGj7vPU1Qr8+s8yLVmM+qiQS3zo5eokExbx6Jt01SQOunSLmtBs4OWr3mwE5K1S3trsAhza7HSBUANR+yIZTJFYbK2sE1UUVFQnxCxo5+6y7So1vdwy8fCXvhY43o0cQHH3Sjc9QKBgCFQbOPiMJ+eUWlz/DLP7nzSzFLs0AW2LNQJoxhnz1OVUU6NxtMYAwiEksu7PvwHgY845JcWCEaPY/npkj9RYlOMXb9yF+F+i5gZk3NB9VB/tFMJX/rMdwDzdoWIQHMo0kL8vgeBnfAcsrJX7sW3c1jfVgDHVL/ZAsqGUy9dzOiK',
             // 必填-应用公钥证书 路径
             // 设置应用私钥后，即可下载得到以下3个证书
-            'app_public_cert_path' => app()->getConfigPath() . '/certs/alipayPublicKey.crt',
+            'app_public_cert_path' => app()->getConfigPath() . './certs/appCertPublicKey_2021004189691334.crt',
             // 必填-支付宝公钥证书 路径
-            'alipay_public_cert_path' => app()->getConfigPath() . '/certs/alipayPublicKey_RSA2.crt',
+            'alipay_public_cert_path' => app()->getConfigPath() . './certs/alipayCertPublicKey_RSA2.crt',
             // 必填-支付宝根证书 路径
-            'alipay_root_cert_path' => '/Users/yansongda/pay/cert/alipayRootCert.crt',
+            'alipay_root_cert_path' => app()->getConfigPath() . './certs/alipayRootCert.crt',
             'return_url' => 'http://caller.hbosw.com/company/payment/alipayResult',
             'notify_url' => 'http://caller.hbosw.com/api/payment/alipayNotify',
             // 选填-第三方应用授权token
@@ -113,8 +113,8 @@ return [
         ],
     ],
     'logger' => [
-        'enable' => false,
-        'file' => './logs/pay.log',
+        'enable' => true,
+        'file' => app()->getRuntimePath() . 'logs/pay.log',
         'level' => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
         'type' => 'single', // optional, 可选 daily.
         'max_file' => 30, // optional, 当 type 为 daily 时有效，默认 30 天
