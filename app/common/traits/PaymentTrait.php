@@ -31,7 +31,17 @@ trait PaymentTrait
 
     public function index()
     {
-        Event::trigger('Payment');
+        $date = '2024-10-24T11:00:14+08:00';
+        $d = mktime(
+            substr($date, 11, 2),
+            substr($date, 14, 2),
+            substr($date, 17, 2),
+            substr($date, 5, 2),
+            substr($date, 8, 2),
+            substr($date, 0, 4)
+        );
+        dump(date('Y-m-d H:i:s', $d));
+//        Event::trigger('Payment');
         if ($this->module === 'admin') {
             $company = (new Company())->getCompanyList();
             $this->view->assign('company', $company->hidden(['user'])->toArray());

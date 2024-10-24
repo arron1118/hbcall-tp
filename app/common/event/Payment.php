@@ -36,11 +36,11 @@ class Payment
                     switch ($data->trade_state) {
                         case 'SUCCESS': // 支付成功
                             $mt = mktime(
+                                substr($data->success_time, 11, 2),
+                                substr($data->success_time, 14, 2),
+                                substr($data->success_time, 17, 2),
+                                substr($data->success_time, 5, 2),
                                 substr($data->success_time, 8, 2),
-                                substr($data->success_time, 10, 2),
-                                substr($data->success_time, 12, 2),
-                                substr($data->success_time, 4, 2),
-                                substr($data->success_time, 6, 2),
                                 substr($data->success_time, 0, 4)
                             );
                             $value->pay_time = $mt;
