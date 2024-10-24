@@ -69,42 +69,54 @@ class Payment
                 } elseif ($value->pay_type === 2) {
                     // 检查支付宝订单是否已支付
                     $data = Pay::alipay(Config::get('payment'))
-                        ->query(['out_trade_no' => $value->payno]);
+                        ->query(['out_trade_no' => $value->payno, '_config' => 'web']);
                     Log::info('支付宝订单：' . json_encode($data));
 
-                    switch ($data->trade_status) {
-                        case 'TRADE_SUCCESS':   // 交易支付成功
-                        case 'TRADE_FINISHED':  // 交易结束，不可退款
-                            $value->pay_time = strtotime($data->send_pay_date);
-                            $value->payment_no = $data->trade_no;
-                            $value->status = 1;
-                            $value->save();
-                            break;
+                    if ((int)$data->code === 40004 && $data->sub_code === 'ACQ.TRADE_NOT_EXIST') {
+                        // 订单不存在
+                        $value->status = 2;
+                        $value->comment = $data->sub_msg;
+                        $value->save();
+                    } else {
+                        switch ($data->trade_status) {
+                            case 'TRADE_SUCCESS':   // 交易支付成功
+                            case 'TRADE_FINISHED':  // 交易结束，不可退款
+                                $value->pay_time = strtotime($data->send_pay_date);
+                                $value->payment_no = $data->trade_no;
+                                $value->status = 1;
+                                $value->save();
+                                break;
 
-                        case 'TRADE_CLOSED':  // 未付款交易超时关闭，或支付完成后全额退款
-                            $value->payment_no = $data->trade_no;
-                            $value->status = 2;
-                            $value->save();
-                            break;
+                            case 'TRADE_CLOSED':  // 未付款交易超时关闭，或支付完成后全额退款
+                                $value->payment_no = $data->trade_no;
+                                $value->status = 2;
+                                $value->comment = '订单已关闭';
+                                $value->save();
+                                break;
 
-                        default:
-                            // WAIT_BUYER_PAY 交易创建，等待买家付款
-                            // TODO
-                            break;
+                            default:
+                                // WAIT_BUYER_PAY 交易创建，等待买家付款
+                                // TODO
+                                break;
+                        }
                     }
                 }
             }
             catch (InvalidConfigException $e){
-                Log::error('配置异常：[' . $e->getCode() . '] ' . $e->getMessage());
+                // 配置异常
+                Log::error('[' . $e->getCode() . '] ' . $e->getMessage());
             }
             catch (InvalidParamsException $e) {
-                Log::error('参数异常：[' . $e->getCode() . '] ' . $e->getMessage());
+                // 参数异常
+                Log::error('[' . $e->getCode() . '] ' . $e->getMessage());
             }
             catch (InvalidResponseException $e) {
-                Log::error('返回异常：[' . $e->getCode() . '] ' . $e->getMessage());
+                // 返回异常
+                Log::error('[' . $e->getCode() . '] ' . $e->getMessage());
             }
             catch (Exception $e) {
-                Log::error('订单异常：[' . $e->getCode() . '] ' . $e->getMessage());
+                // 订单异常
+                Log::error('[' . $e->getCode() . '] ' . $e->getMessage());
                 Log::debug('订单异常raw：' . $e->getTraceAsString());
             }
         }

@@ -8,6 +8,7 @@ use app\common\model\Company;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Log;
+use Yansongda\Artful\Exception\InvalidResponseException;
 use Yansongda\Pay\Exceptions\GatewayException;
 use Yansongda\Pay\Pay;
 use app\common\model\Payment as PaymentModel;
@@ -211,13 +212,15 @@ class Payment extends \app\common\controller\ApiController
             $data = [];
             if ($payment->pay_type === 1) {
                 // 检查微信订单是否已支付
-                $data = Pay::wechat(Config::get('payment.wxpay'))->find(['out_trade_no' => $payment->payno]);
+                $data = Pay::wechat(Config::get('payment'))
+                    ->query(['out_trade_no' => $payment->payno]);
             } elseif ($payment->pay_type === 2) {
                 // 检查支付宝订单是否已支付
                 try {
-                    $data = Pay::alipay(Config::get('payment.alipay.web'))->find(['out_trade_no' => $payment->payno]);
-                } catch (GatewayException $e) {
-                    $data = $e->raw['alipay_trade_query_response'];
+                    $data = Pay::alipay(Config::get('payment'))
+                        ->query(['out_trade_no' => $payment->payno, '_config' => 'app']);
+                } catch (InvalidResponseException $e) {
+                    $data = $e->getMessage();
                 }
             }
 

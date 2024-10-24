@@ -31,7 +31,7 @@ class Payment extends \app\common\controller\CompanyController
             $this->returnData['code'] = 1;
             $this->returnData['msg'] = 'success';
             $this->returnData['data'] = Pay::wechat(Config::get('payment'))
-                ->find([
+                ->query([
                     'out_trade_no' => $payno,
                     '_action' => 'native',  // 查询扫码支付订单
                 ]);
@@ -71,9 +71,6 @@ class Payment extends \app\common\controller\CompanyController
 
             if ($payType === 2) {
                 $data['_config'] = 'web';
-                $ssl = openssl_x509_parse('');
-                $this->returnData['data'] = $ssl;
-//                return json($this->returnData);
                 return Pay::alipay()->web($data);
             }
         } catch (InvalidConfigException $e) {
