@@ -55,7 +55,7 @@ return [
             // 可在 https://pay.weixin.qq.com/ 账户中心->商户信息 查看
             'mch_id' => '1695646480',
             // 选填-v2商户私钥
-            'mch_secret_key_v2' => '',
+            'mch_secret_key_v2' => 'ECPbogadOBXvGzwp9klS9P3L7z3HE5IG',
             // 必填-v3 商户秘钥
             // 即 API v3 密钥(32字节，形如md5值)，可在 账户中心->API安全 中设置
             'mch_secret_key' => 'Axcv2M0CiOeLynN0n4ylyBteBm0n5cAF',
@@ -76,7 +76,7 @@ return [
             // 选填-小程序 的 app_id
             'mini_app_id' => '',
             // 选填-app 的 app_id
-            'app_id' => '',
+            'app_id' => 'ww01beae8f33a202b4',
             // 选填-服务商模式下，子公众号 的 app_id
             'sub_mp_app_id' => '',
             // 选填-服务商模式下，子 app 的 app_id
