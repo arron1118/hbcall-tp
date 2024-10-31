@@ -56,7 +56,7 @@ class Payment extends \app\common\controller\CompanyController
 
         $data = $this->createOrder($this->userInfo, $amount, $payType, $orderNo);
         try {
-            pay::config(Config::get('payment'));
+            Pay::config(Config::get('payment'));
             if ($payType === 1) {
                 $pay = Pay::wechat()->scan($data);
                 $this->returnData['code'] = 1;
